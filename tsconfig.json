@@ -19,7 +19,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@pagos/*": ["./src/modules/pagos-seguro-bolivar/*"]
     }
   },
   "include": [

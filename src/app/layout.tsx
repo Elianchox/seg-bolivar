@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { roboto } from "@/fonts/roboto";
-import { robotoCondensed } from "@/fonts/roboto-condensed";
-import "./globals.css";
+import { roboto } from "@pagos/fonts/roboto";
+import { robotoCondensed } from "@pagos/fonts/roboto-condensed";
+import "@pagos/globals.css";
 
 export const metadata: Metadata = {
   title: "Seg Bolivar",
