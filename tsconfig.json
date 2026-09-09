@@ -20,7 +20,9 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@pagos/*": ["./src/modules/pagos-seguro-bolivar/*"]
+      "@core/*": ["./src/core/*"],
+      "@pagos/*": ["./src/modules/pagos-seguro-bolivar/*"],
+      "@davivienda-pagos/*": ["./src/modules/portal-pagos-davivienda/*"]
     }
   },
   "include": [

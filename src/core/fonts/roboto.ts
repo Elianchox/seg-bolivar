@@ -21,6 +21,6 @@ export const roboto = localFont({
     { path: "./Roboto-Black.woff2", weight: "900", style: "normal" },
     { path: "./Roboto-BlackItalic.woff2", weight: "900", style: "italic" },
   ],
-  variable: "--font-sans",
+  variable: "--font-roboto",
   display: "swap",
 });

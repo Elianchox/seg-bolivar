@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { roboto } from "@pagos/fonts/roboto";
-import { robotoCondensed } from "@pagos/fonts/roboto-condensed";
-import "@pagos/globals.css";
+import { helvetica } from "@core/fonts/helvetica";
+import { roboto } from "@core/fonts/roboto";
 
 export const metadata: Metadata = {
   title: "Seg Bolivar",
@@ -11,12 +10,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="es">
-      <body
-        className={`${roboto.variable} ${robotoCondensed.variable} min-h-screen antialiased`}
-      >
-        {children}
-      </body>
+    <html
+      lang="es"
+      className={`${roboto.variable} ${helvetica.variable} min-h-screen antialiased`}
+    >
+      <body className="min-h-screen">{children}</body>
     </html>
   );
 }

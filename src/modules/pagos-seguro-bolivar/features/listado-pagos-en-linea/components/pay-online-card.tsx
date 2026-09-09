@@ -1,11 +1,14 @@
 import Image from "next/image";
 import { IconMapPin } from "@pagos/components/ui/icons/icon-map-pin";
 import type { OnlinePayment } from "@pagos/features/listado-pagos-en-linea/types/online-payment";
+import { toInternalPaymentRoute } from "@pagos/features/listado-pagos-en-linea/utils/payment-route";
 
 export function PayOnlineCard({ payment }: { payment: OnlinePayment }) {
+  const href = toInternalPaymentRoute(payment.url) ?? "#";
+
   return (
     <a
-      href="#"
+      href={href}
       className="mb-8 block rounded-[12px] border border-[#e9eef2] bg-white p-4 hover:shadow-[0_0.5rem_1rem_rgba(0,0,0,0.15)]"
     >
       <h3 className="mb-0 line-clamp-2 h-[54px] text-[1.5rem] leading-[27px] font-semibold text-ink">

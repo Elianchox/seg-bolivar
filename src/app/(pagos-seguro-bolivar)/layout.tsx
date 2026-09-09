@@ -1,11 +1,13 @@
 import type { ReactNode } from "react";
+import { robotoCondensed } from "@pagos/fonts/roboto-condensed";
 import { Footer } from "@pagos/components/layout/footer/footer";
 import { Header } from "@pagos/components/layout/header/header";
 import { MobileFixedActions } from "@pagos/components/layout/mobile-fixed-actions";
+import "@pagos/globals.css";
 
 export default function PagosLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <div className="flex min-h-screen flex-col bg-surface">
+    <div className={`${robotoCondensed.variable} flex min-h-screen flex-col bg-surface`}>
       <Header />
       <main className="flex-1">{children}</main>
       <Footer />
