@@ -9,7 +9,7 @@ const base =
 
 const variants: Record<NonNullable<ButtonProps["variant"]>, string> = {
   primary:
-    "border-brand bg-brand text-white shadow-[0_2px_0_rgba(0,0,0,0.043)] hover:border-brand-hover hover:bg-brand-hover active:border-brand-active active:bg-brand-active disabled:border-border disabled:bg-surface-muted disabled:text-text-disabled disabled:shadow-none",
+    "border-brand bg-brand text-white shadow-[0_2px_0_rgba(0,0,0,0.045)] hover:border-brand-hover hover:bg-brand-hover active:border-brand-active active:bg-brand-active disabled:border-border disabled:bg-surface-muted disabled:text-text-disabled disabled:shadow-none",
   default:
     "border-border bg-surface text-text shadow-[0_2px_0_rgba(0,0,0,0.016)] hover:border-brand-hover hover:text-brand-hover active:border-brand-active active:text-brand-active",
 };

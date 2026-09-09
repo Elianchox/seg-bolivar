@@ -5,7 +5,7 @@ interface StepsProps {
 
 export function Steps({ current, items }: StepsProps) {
   return (
-    <ol className="flex w-full list-none">
+    <ol className="flex w-full">
       {items.map((title, index) => {
         const active = index === current;
         const isLast = index === items.length - 1;
@@ -14,26 +14,26 @@ export function Steps({ current, items }: StepsProps) {
             {!isLast && (
               <span
                 aria-hidden="true"
-                className="absolute left-[10px] right-[10px] top-[16px] h-px bg-border"
-              />
+                className="absolute left-[58px] top-[12px] w-full px-6 pt-[3.5px]"
+              >
+                <span className="block h-px w-full bg-border" />
+              </span>
             )}
-            <div className="relative z-10 flex flex-col items-center text-center">
-              <span
-                className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-[15px] leading-none [font-family:var(--font-roboto)] ${
-                  active
-                    ? "border-brand bg-brand text-surface"
-                    : "border-text-disabled bg-transparent text-text-disabled"
-                }`}
-              >
-                {index + 1}
-              </span>
-              <span
-                className={`mt-2 text-[15px] leading-8 ${
-                  active ? "text-ink" : "text-text-muted"
-                }`}
-              >
-                {title}
-              </span>
+            <span
+              className={`ml-[42px] inline-flex h-8 w-8 items-center justify-center rounded-full border text-[15px] [font-family:var(--font-roboto)] ${
+                active
+                  ? "border-brand bg-brand text-surface"
+                  : "border-text-disabled bg-transparent text-text-disabled"
+              }`}
+            >
+              <span className="relative -top-[1px]">{index + 1}</span>
+            </span>
+            <div
+              className={`mt-2 w-[116px] text-center text-[15px] leading-8 ${
+                active ? "text-ink" : "text-text-muted"
+              }`}
+            >
+              {title}
             </div>
           </li>
         );

@@ -20,20 +20,12 @@ export function Checkbox({ id, checked = false, onChange, label }: CheckboxProps
       />
       <span
         aria-hidden="true"
-        className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-[4px] border transition-colors duration-300 ${
-          checked ? "border-brand bg-brand" : "border-border bg-surface"
+        className={`relative flex h-4 w-4 shrink-0 items-center justify-center rounded-[2px] border transition-colors duration-300 ${
+          checked ? "border-brand bg-brand" : "border-border bg-surface hover:border-brand"
         }`}
       >
         {checked && (
-          <svg viewBox="0 0 8 8" className="h-2 w-2" fill="none" aria-hidden="true">
-            <path
-              d="M1 4l2 2 4-5"
-              stroke="white"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <span className="absolute left-[22%] top-1/2 h-[9.142px] w-[5.714px] border-b-2 border-r-2 border-white [transform:rotate(45deg)_translate(-50%,-50%)]" />
         )}
       </span>
       <span className="ml-2">{label}</span>
