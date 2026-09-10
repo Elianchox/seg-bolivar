@@ -2,50 +2,12 @@
 
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { ReactNode } from "react";
 import { Button } from "@davivienda-pagos/components/ui/button";
 import { Checkbox } from "@davivienda-pagos/components/ui/checkbox";
-import { IconInfoCircle } from "@davivienda-pagos/components/ui/icons/info-circle";
 import { Input } from "@davivienda-pagos/components/ui/input";
-import { Tooltip } from "@davivienda-pagos/components/ui/tooltip";
 import { paymentSchema, type PaymentFormValues } from "../types/payment-schema";
 import { AmountInput } from "./amount-input";
-
-interface FormItemProps {
-  id: string;
-  label: string;
-  required?: boolean;
-  help?: string;
-  error?: string;
-  children: ReactNode;
-}
-
-function FormItem({ id, label, required = false, help, error, children }: FormItemProps) {
-  return (
-    <div>
-      <label htmlFor={id} className="block text-[14px] leading-[22px] text-heading">
-        {required && <span className="mr-1 text-brand-soft">*</span>}
-        <span>{label}</span>
-        <Tooltip title={label} content={help ?? ""}>
-          <span className="ml-1 inline-block p-1 align-middle text-[10px] text-info">
-            <IconInfoCircle />
-          </span>
-        </Tooltip>
-        <span className="ml-[2px] mr-2 hidden min-[480px]:inline">:</span>
-      </label>
-      <div className="leading-10">{children}</div>
-      {error && (
-        <div
-          id={`${id}-error`}
-          role="alert"
-          className="min-h-[22px] text-[14px] leading-[21px] text-error"
-        >
-          {error}
-        </div>
-      )}
-    </div>
-  );
-}
+import { FormItem } from "./form-item";
 
 const TERMS_TEXT =
   "A través de este servicio usted podrá realizar transferencias electrónicas a los fondos de inversión colectiva que administra Fiduciaria Davivienda S.A. Usted debe disponer de los medios necesarios y seguros para utilizar el servicio de internet; por lo que Fiduciaria Davivienda S.A. no se puede hacer responsable de la disponibilidad ni confiabilidad de los mismos.";

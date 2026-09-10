@@ -1,8 +1,10 @@
+import type { ReactNode } from "react";
+
 interface CheckboxProps {
   id?: string;
   checked?: boolean;
   onChange?: (checked: boolean) => void;
-  label: string;
+  label: ReactNode;
   hasError?: boolean;
 }
 
