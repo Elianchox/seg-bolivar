@@ -4,9 +4,15 @@ interface InputProps extends ComponentPropsWithoutRef<"input"> {
   hasError?: boolean;
 }
 
-export function Input({ className = "", hasError = false, ...rest }: InputProps) {
+export function Input({
+  className = "",
+  hasError = false,
+  autoComplete = "off",
+  ...rest
+}: InputProps) {
   return (
     <input
+      autoComplete={autoComplete}
       aria-invalid={hasError || undefined}
       className={`h-8 w-full rounded-[4px] border bg-surface px-[13px] pt-[6px] pb-[4px] text-[14px] leading-8 text-text outline-none transition-colors duration-300 placeholder:text-text-disabled ${
         hasError

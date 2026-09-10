@@ -15,6 +15,7 @@ import {
   TERMS_URL,
   type PseFormValues,
 } from "../types/pse-schema";
+import { numericField } from "../utils/numeric-field";
 import { FormItem } from "./form-item";
 
 interface PsePaymentFormProps {
@@ -148,13 +149,15 @@ export function PsePaymentForm({ amount, onValidityChange, onValuesChange }: Pse
                 <Input
                   id="docNumber"
                   placeholder="Número de documento"
-                  autoComplete="off"
+                  inputMode={values.docType === "PA" ? undefined : "numeric"}
                   hasError={!!errors.docNumber}
                   aria-label="Número de documento"
                   aria-describedby={
                     errors.docType || errors.docNumber ? "docNumber-error" : undefined
                   }
-                  {...register("docNumber")}
+                  {...numericField(register("docNumber"), {
+                    allowAlpha: values.docType === "PA",
+                  })}
                 />
               </div>
             </div>
@@ -169,7 +172,6 @@ export function PsePaymentForm({ amount, onValidityChange, onValuesChange }: Pse
               id="name"
               maxLength={256}
               placeholder="Nombre"
-              autoComplete="name"
               hasError={!!errors.name}
               aria-describedby={errors.name ? "name-error" : undefined}
               {...register("name")}
@@ -183,7 +185,6 @@ export function PsePaymentForm({ amount, onValidityChange, onValuesChange }: Pse
               type="email"
               maxLength={256}
               placeholder="Correo electrónico"
-              autoComplete="email"
               hasError={!!errors.email}
               aria-describedby={errors.email ? "email-error" : undefined}
               {...register("email")}
@@ -198,12 +199,12 @@ export function PsePaymentForm({ amount, onValidityChange, onValuesChange }: Pse
             <Input
               id="phone"
               type="tel"
-              maxLength={30}
+              inputMode="numeric"
+              maxLength={10}
               placeholder="Teléfono de contacto"
-              autoComplete="tel"
               hasError={!!errors.phone}
               aria-describedby={errors.phone ? "phone-error" : undefined}
-              {...register("phone")}
+              {...numericField(register("phone"), { maxLength: 10 })}
             />
           </FormItem>
         </div>

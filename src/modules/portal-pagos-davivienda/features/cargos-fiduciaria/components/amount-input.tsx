@@ -21,6 +21,7 @@ export function AmountInput({ id, value, onChange, hasError = false }: AmountInp
     <input
       id={id}
       type="text"
+      autoComplete="off"
       inputMode="numeric"
       value={value}
       onChange={(e) => change(e.target.value)}

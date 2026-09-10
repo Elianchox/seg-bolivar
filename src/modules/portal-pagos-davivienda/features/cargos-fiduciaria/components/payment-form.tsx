@@ -6,6 +6,7 @@ import { Button } from "@davivienda-pagos/components/ui/button";
 import { Checkbox } from "@davivienda-pagos/components/ui/checkbox";
 import { Input } from "@davivienda-pagos/components/ui/input";
 import { paymentSchema, type PaymentFormValues } from "../types/payment-schema";
+import { numericField } from "../utils/numeric-field";
 import { AmountInput } from "./amount-input";
 import { FormItem } from "./form-item";
 
@@ -74,10 +75,11 @@ export function PaymentForm({ onConsultar }: PaymentFormProps) {
             <Input
               id="product_number"
               maxLength={16}
+              inputMode="numeric"
               placeholder="Número Producto"
               hasError={!!errors.productNumber}
               aria-describedby={errors.productNumber ? "product_number-error" : undefined}
-              {...register("productNumber")}
+              {...numericField(register("productNumber"))}
             />
           </FormItem>
         </div>

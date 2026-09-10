@@ -1,24 +1,45 @@
 import { z } from "zod";
 
-export const pseSchema = z.object({
-  bank: z.string().min(1, "Debe seleccionar un banco"),
-  personType: z.string().min(1, "Debe seleccionar el tipo de persona"),
-  docType: z.string().min(1, "Debe seleccionar el tipo de documento"),
-  docNumber: z.string().trim().min(1, "Debe ingresar el número de documento"),
-  name: z.string().trim().min(1, "Debe ingresar su nombre o razón social"),
-  email: z
-    .string()
-    .trim()
-    .min(1, "Debe ingresar su correo electrónico")
-    .email("El correo electrónico no es válido"),
-  phone: z.string().trim().min(1, "Debe ingresar su teléfono de contacto"),
-  termsAccepted: z
-    .boolean()
-    .refine(
-      (value) => value,
-      "Para continuar con la transacción usted debe Aceptar los Términos y Condiciones. Le invitamos a leerlos detalladamente.",
-    ),
-});
+export const pseSchema = z
+  .object({
+    bank: z.string().min(1, "Debe seleccionar un banco"),
+    personType: z.string().min(1, "Debe seleccionar el tipo de persona"),
+    docType: z.string().min(1, "Debe seleccionar el tipo de documento"),
+    docNumber: z.string().trim().min(1, "Debe ingresar el número de documento"),
+    name: z.string().trim().min(1, "Debe ingresar su nombre o razón social"),
+    email: z
+      .string()
+      .trim()
+      .min(1, "Debe ingresar su correo electrónico")
+      .email("El correo electrónico no es válido"),
+    phone: z
+      .string()
+      .trim()
+      .min(1, "Debe ingresar su teléfono de contacto")
+      .refine((value) => /^\d{10}$/.test(value), "El número de teléfono no es válido"),
+    termsAccepted: z
+      .boolean()
+      .refine(
+        (value) => value,
+        "Para continuar con la transacción usted debe Aceptar los Términos y Condiciones. Le invitamos a leerlos detalladamente.",
+      ),
+  })
+  .superRefine((data, ctx) => {
+    if (data.docNumber.length > 0 && data.docNumber.length <= 5) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["docNumber"],
+        message: "El número de documento no es válido",
+      });
+    }
+    if (data.docType && data.docType !== "PA" && !/^\d+$/.test(data.docNumber)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["docNumber"],
+        message: "El número de documento debe contener solo números",
+      });
+    }
+  });
 
 export type PseFormValues = z.infer<typeof pseSchema>;
 
