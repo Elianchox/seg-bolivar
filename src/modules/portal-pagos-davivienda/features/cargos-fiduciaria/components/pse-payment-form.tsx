@@ -1,6 +1,7 @@
 "use client";
 
-import { Controller, useForm } from "react-hook-form";
+import { useEffect } from "react";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Checkbox } from "@davivienda-pagos/components/ui/checkbox";
 import { Input } from "@davivienda-pagos/components/ui/input";
@@ -17,7 +18,11 @@ import {
 } from "../types/pse-schema";
 import { FormItem } from "./form-item";
 
-export function PsePaymentForm() {
+interface PsePaymentFormProps {
+  onValidityChange?: (isValid: boolean) => void;
+}
+
+export function PsePaymentForm({ onValidityChange }: PsePaymentFormProps) {
   const {
     register,
     handleSubmit,
@@ -30,6 +35,13 @@ export function PsePaymentForm() {
     mode: "onSubmit",
     reValidateMode: "onChange",
   });
+
+  const values = useWatch({ control });
+  const isComplete = pseSchema.safeParse(values).success;
+
+  useEffect(() => {
+    onValidityChange?.(isComplete);
+  }, [isComplete, onValidityChange]);
 
   const onSubmit = () => {
     // Redirección a PSE (pendiente del siguiente paso del flujo)

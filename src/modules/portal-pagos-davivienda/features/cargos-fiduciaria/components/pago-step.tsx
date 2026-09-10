@@ -1,9 +1,14 @@
+"use client";
+
+import { useState } from "react";
 import { Typography } from "@davivienda-pagos/components/ui/typography";
 import { PaymentMethodCard } from "./payment-method-card";
 import { PaymentSummary } from "./payment-summary";
 import { PsePaymentForm } from "./pse-payment-form";
 
 export function PagoStep() {
+  const [pseFormReady, setPseFormReady] = useState(false);
+
   return (
     <div>
       <div className="-mx-[15px] flex justify-between flex-wrap">
@@ -22,11 +27,11 @@ export function PagoStep() {
           <Typography variant="heading" className="mb-5 inline-block font-semibold">
             Ingrese la siguiente información
           </Typography>
-          <PsePaymentForm />
+          <PsePaymentForm onValidityChange={setPseFormReady} />
         </div>
 
         <div className="w-full px-[15px] min-[768px]:w-1/3">
-          <PaymentSummary />
+          <PaymentSummary disabled={!pseFormReady} />
         </div>
       </div>
 

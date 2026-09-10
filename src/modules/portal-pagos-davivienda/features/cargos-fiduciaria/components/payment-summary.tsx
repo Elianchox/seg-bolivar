@@ -9,7 +9,11 @@ const SUMMARY_DATA = {
   fund: "CONSOLIDAR",
 } as const;
 
-export function PaymentSummary() {
+interface PaymentSummaryProps {
+  disabled?: boolean;
+}
+
+export function PaymentSummary({ disabled = true }: PaymentSummaryProps) {
   return (
     <div className="mt-0 mb-[2em] rounded-[14px] p-[1.5em] shadow-[0_4px_15px_rgba(0,0,0,0.15)] min-[768px]:mt-[1.5em] min-[768px]:max-[991px]:w-[230px] min-[992px]:p-[30px] min-[992px]:pt-[28px] min-[1600px]:p-[30px]">
       <div className="flex flex-wrap justify-between">
@@ -56,7 +60,7 @@ export function PaymentSummary() {
         </div>
       </div>
       <div className="flex justify-center">
-        <Button variant="primary" disabled className="min-w-[100px]">
+        <Button variant="primary" disabled={disabled} className="min-w-[100px]">
           Pagar
         </Button>
       </div>
