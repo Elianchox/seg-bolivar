@@ -1,8 +1,7 @@
 "use client";
 
-import { Controller, useForm, useWatch } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@davivienda-pagos/components/ui/button";
 import { Checkbox } from "@davivienda-pagos/components/ui/checkbox";
 import { Input } from "@davivienda-pagos/components/ui/input";
 import { Select } from "@davivienda-pagos/components/ui/select";
@@ -23,6 +22,7 @@ export function PsePaymentForm() {
     register,
     handleSubmit,
     control,
+    trigger,
     formState: { errors },
   } = useForm<PseFormValues>({
     resolver: zodResolver(pseSchema),
@@ -30,8 +30,6 @@ export function PsePaymentForm() {
     mode: "onSubmit",
     reValidateMode: "onChange",
   });
-
-  const termsAccepted = useWatch({ control, name: "termsAccepted" });
 
   const onSubmit = () => {
     // Redirección a PSE (pendiente del siguiente paso del flujo)
@@ -178,7 +176,10 @@ export function PsePaymentForm() {
               <Checkbox
                 id="termsAndConditions"
                 checked={field.value}
-                onChange={field.onChange}
+                onChange={(checked) => {
+                  field.onChange(checked);
+                  void trigger("termsAccepted");
+                }}
                 hasError={!!errors.termsAccepted}
                 label={
                   <span>
@@ -200,7 +201,7 @@ export function PsePaymentForm() {
             <div
               id="termsAndConditions-error"
               role="alert"
-              className="min-h-[22px] text-[14px] leading-[21px] text-error"
+              className="my-[5px] min-h-[22px] text-[14px] leading-[21px] text-error"
             >
               {errors.termsAccepted.message}
             </div>

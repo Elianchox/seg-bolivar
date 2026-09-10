@@ -12,7 +12,12 @@ export const pseSchema = z.object({
     .min(1, "Debe ingresar su correo electrónico")
     .email("El correo electrónico no es válido"),
   phone: z.string().trim().min(1, "Debe ingresar su teléfono de contacto"),
-  termsAccepted: z.boolean().refine((value) => value, "Debe aceptar los términos y condiciones"),
+  termsAccepted: z
+    .boolean()
+    .refine(
+      (value) => value,
+      "Para continuar con la transacción usted debe Aceptar los Términos y Condiciones. Le invitamos a leerlos detalladamente.",
+    ),
 });
 
 export type PseFormValues = z.infer<typeof pseSchema>;
