@@ -5,7 +5,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@davivienda-pagos/components/ui/button";
 import { Checkbox } from "@davivienda-pagos/components/ui/checkbox";
 import { Input } from "@davivienda-pagos/components/ui/input";
+import type { FiduciaryTicket } from "../types/fiduciary";
 import { paymentSchema, type PaymentFormValues } from "../types/payment-schema";
+import { useFiduciaryConsult } from "../hooks/use-fiduciary-consult";
 import { numericField } from "../utils/numeric-field";
 import { AmountInput } from "./amount-input";
 import { FormItem } from "./form-item";
@@ -14,7 +16,7 @@ const TERMS_TEXT =
   "A través de este servicio usted podrá realizar transferencias electrónicas a los fondos de inversión colectiva que administra Fiduciaria Davivienda S.A. Usted debe disponer de los medios necesarios y seguros para utilizar el servicio de internet; por lo que Fiduciaria Davivienda S.A. no se puede hacer responsable de la disponibilidad ni confiabilidad de los mismos.";
 
 interface PaymentFormProps {
-  onConsultar: (values: PaymentFormValues) => void;
+  onConsultar: (values: PaymentFormValues, ticket: FiduciaryTicket) => void;
 }
 
 export function PaymentForm({ onConsultar }: PaymentFormProps) {
@@ -36,11 +38,13 @@ export function PaymentForm({ onConsultar }: PaymentFormProps) {
   });
 
   const termsAccepted = useWatch({ control, name: "termsAccepted" });
+  const { consult, isLoading, error } = useFiduciaryConsult();
 
-  const onSubmit = (values: PaymentFormValues) => {
-    onConsultar(values);
-    // eslint-disable-next-line react-hooks/immutability
-    window.location.hash = "#/cargos/fiduciaria/pago";
+  const onSubmit = async (values: PaymentFormValues) => {
+    const ticket = await consult(values);
+    if (ticket) {
+      onConsultar(values, ticket);
+    }
   };
 
   return (
@@ -158,10 +162,18 @@ export function PaymentForm({ onConsultar }: PaymentFormProps) {
       </div>
 
       <div className="flex justify-center mb-10">
-        <Button variant="primary" type="submit" disabled={!termsAccepted}>
-          Consultar
+        <Button variant="primary" type="submit" disabled={!termsAccepted || isLoading}>
+          {isLoading ? "Consultando…" : "Consultar"}
         </Button>
       </div>
+      {error && (
+        <div
+          role="alert"
+          className="mb-10 text-center text-[14px] leading-[21px] text-error"
+        >
+          {error}
+        </div>
+      )}
     </form>
   );
 }

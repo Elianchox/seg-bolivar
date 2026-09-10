@@ -20,11 +20,17 @@ import { FormItem } from "./form-item";
 
 interface PsePaymentFormProps {
   amount: string;
+  defaultName?: string;
   onValidityChange?: (isValid: boolean) => void;
   onValuesChange?: (values: PseFormValues) => void;
 }
 
-export function PsePaymentForm({ amount, onValidityChange, onValuesChange }: PsePaymentFormProps) {
+export function PsePaymentForm({
+  amount,
+  defaultName = "",
+  onValidityChange,
+  onValuesChange,
+}: PsePaymentFormProps) {
   const {
     register,
     handleSubmit,
@@ -33,7 +39,7 @@ export function PsePaymentForm({ amount, onValidityChange, onValuesChange }: Pse
     formState: { errors },
   } = useForm<PseFormValues>({
     resolver: zodResolver(pseSchema),
-    defaultValues: DEFAULT_PSE_VALUES,
+    defaultValues: { ...DEFAULT_PSE_VALUES, name: defaultName },
     mode: "onChange",
     reValidateMode: "onChange",
   });

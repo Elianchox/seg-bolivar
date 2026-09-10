@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { RECEIPT_TOKEN } from "../constants/consult-api";
+import type { FiduciaryTicket } from "../types/fiduciary";
 import type { PaymentFormValues } from "../types/payment-schema";
 import { DEFAULT_PSE_VALUES, type PseFormValues } from "../types/pse-schema";
 import { PagoStep } from "./pago-step";
@@ -26,6 +27,7 @@ export function FiduciariaView() {
   const [isPago, setIsPago] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [payment, setPayment] = useState<PaymentFormValues | null>(null);
+  const [ticket, setTicket] = useState<FiduciaryTicket | null>(null);
   const [pseValues, setPseValues] = useState<PseFormValues>(DEFAULT_PSE_VALUES);
 
   useEffect(() => {
@@ -47,7 +49,14 @@ export function FiduciariaView() {
 
   const handleBack = () => {
     setPayment(null);
+    setTicket(null);
     window.location.hash = CONSULTAR_HASH;
+  };
+
+  const handleConsultar = (values: PaymentFormValues, result: FiduciaryTicket) => {
+    setPayment(values);
+    setTicket(result);
+    window.location.hash = PAGO_PATH;
   };
 
   const handleContinue = () => {
@@ -58,14 +67,15 @@ export function FiduciariaView() {
 
   return (
     <PaymentShell currentStep={currentStep}>
-      {isPago && hasError && payment ? (
+      {isPago && hasError && payment && ticket ? (
         <section className="py-2 min-[480px]:py-3 min-[576px]:py-4 min-[768px]:py-6  md:mb-10">
-          <PaymentError payment={payment} holderName={pseValues.name} onBack={handleBack} />
+          <PaymentError payment={payment} ticket={ticket} onBack={handleBack} />
         </section>
-      ) : isPago && payment ? (
+      ) : isPago && payment && ticket ? (
         <section className="py-2 min-[480px]:py-3 min-[576px]:py-4 min-[768px]:py-6  md:mb-10">
           <PagoStep
             payment={payment}
+            ticket={ticket}
             values={pseValues}
             onValuesChange={setPseValues}
             onContinue={handleContinue}
@@ -74,7 +84,7 @@ export function FiduciariaView() {
       ) : (
         <section className="flex justify-center py-2 min-[480px]:py-3 min-[576px]:py-4 min-[768px]:py-6">
           <div className="w-full md:w-3/4">
-            <PaymentForm onConsultar={setPayment} />
+            <PaymentForm onConsultar={handleConsultar} />
           </div>
         </section>
       )}

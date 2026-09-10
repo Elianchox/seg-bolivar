@@ -48,7 +48,7 @@ export const DEFAULT_PSE_VALUES: PseFormValues = {
   personType: "",
   docType: "",
   docNumber: "",
-  name: "JHONATAN YECID VILLALOBO PEREZ",
+  name: "",
   email: "",
   phone: "",
   termsAccepted: false,

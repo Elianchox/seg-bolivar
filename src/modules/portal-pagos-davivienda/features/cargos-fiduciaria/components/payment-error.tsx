@@ -1,14 +1,15 @@
 import { Button } from "@davivienda-pagos/components/ui/button";
+import type { FiduciaryTicket } from "../types/fiduciary";
 import type { PaymentFormValues } from "../types/payment-schema";
 import { PaymentSummary } from "./payment-summary";
 
 interface PaymentErrorProps {
   payment: PaymentFormValues;
-  holderName: string;
+  ticket: FiduciaryTicket;
   onBack: () => void;
 }
 
-export function PaymentError({ payment, holderName, onBack }: PaymentErrorProps) {
+export function PaymentError({ payment, ticket, onBack }: PaymentErrorProps) {
   return (
     <div className="-mx-[15px] flex flex-wrap justify-between">
       <div className="w-full px-[15px] min-[768px]:w-2/3 min-[992px]:w-[58.3333%]">
@@ -30,7 +31,7 @@ export function PaymentError({ payment, holderName, onBack }: PaymentErrorProps)
         </div>
       </div>
       <div className="w-full px-[15px] min-[768px]:w-1/3">
-        <PaymentSummary disabled payment={payment} holderName={holderName} />
+        <PaymentSummary disabled payment={payment} ticket={ticket} />
       </div>
     </div>
   );

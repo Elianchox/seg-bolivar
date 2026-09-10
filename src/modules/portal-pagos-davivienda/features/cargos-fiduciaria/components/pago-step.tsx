@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Typography } from "@davivienda-pagos/components/ui/typography";
+import type { FiduciaryTicket } from "../types/fiduciary";
 import type { PaymentFormValues } from "../types/payment-schema";
 import type { PseFormValues } from "../types/pse-schema";
 import { PaymentMethodCard } from "./payment-method-card";
@@ -11,12 +12,13 @@ import { PaymentConfirmModal } from "./payment-confirm-modal";
 
 interface PagoStepProps {
   payment: PaymentFormValues;
+  ticket: FiduciaryTicket;
   values: PseFormValues;
   onValuesChange: (values: PseFormValues) => void;
   onContinue?: () => void;
 }
 
-export function PagoStep({ payment, values, onValuesChange, onContinue }: PagoStepProps) {
+export function PagoStep({ payment, ticket, values, onValuesChange, onContinue }: PagoStepProps) {
   const [pseFormReady, setPseFormReady] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -40,6 +42,7 @@ export function PagoStep({ payment, values, onValuesChange, onContinue }: PagoSt
           </Typography>
           <PsePaymentForm
             amount={payment.amount}
+            defaultName={ticket.name || ""}
             onValidityChange={setPseFormReady}
             onValuesChange={onValuesChange}
           />
@@ -50,7 +53,7 @@ export function PagoStep({ payment, values, onValuesChange, onContinue }: PagoSt
             disabled={!pseFormReady}
             onPagar={() => setModalOpen(true)}
             payment={payment}
-            holderName={values.name}
+            ticket={ticket}
           />
         </div>
       </div>

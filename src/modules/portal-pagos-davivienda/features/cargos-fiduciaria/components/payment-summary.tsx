@@ -1,15 +1,15 @@
 import { Button } from "@davivienda-pagos/components/ui/button";
-import { PRODUCT_TYPE } from "../constants/consult-api";
+import type { FiduciaryTicket } from "../types/fiduciary";
 import type { PaymentFormValues } from "../types/payment-schema";
 
 interface PaymentSummaryProps {
   disabled?: boolean;
   onPagar?: () => void;
   payment: PaymentFormValues;
-  holderName: string;
+  ticket: FiduciaryTicket;
 }
 
-export function PaymentSummary({ disabled = true, onPagar, payment, holderName }: PaymentSummaryProps) {
+export function PaymentSummary({ disabled = true, onPagar, payment, ticket }: PaymentSummaryProps) {
   return (
     <div className="mt-0 mb-[2em] rounded-[14px] p-[1.5em] shadow-[0_4px_15px_rgba(0,0,0,0.15)] min-[768px]:mt-[1.5em] min-[768px]:max-[991px]:w-[230px] min-[992px]:p-[30px] min-[992px]:pt-[28px] min-[1600px]:p-[30px]">
       <div className="flex flex-wrap justify-between">
@@ -19,13 +19,13 @@ export function PaymentSummary({ disabled = true, onPagar, payment, holderName }
       <div className="flex flex-wrap items-center justify-between">
         <div className="w-full min-[576px]:w-3/4 min-[768px]:w-full min-[992px]:w-3/4">
           <p className="mb-[1em] text-[14px] leading-[21px] text-text">
-            <strong>Identificación:</strong> <span>{payment.ticketNumber}</span>
+            <strong>Identificación:</strong> <span>{ticket.client_id}</span>
           </p>
           <p className="mb-[1em] text-[14px] leading-[21px] text-text">
-            <strong>Tipo de producto:</strong> <span>{PRODUCT_TYPE}</span>
+            <strong>Tipo de producto:</strong> <span>{ticket.concept}</span>
           </p>
           <p className="mb-[1em] text-[14px] leading-[21px] text-text">
-            <strong>Número fondo de inversión:</strong> <span>{payment.productNumber}</span>
+            <strong>Número fondo de inversión:</strong> <span>{ticket.reference}</span>
           </p>
         </div>
         <div className="w-full min-[576px]:w-1/4 min-[768px]:w-full min-[992px]:w-1/4">
@@ -43,15 +43,15 @@ export function PaymentSummary({ disabled = true, onPagar, payment, holderName }
       <div>
         <div className="w-full min-[576px]:w-3/4 min-[768px]:w-full min-[992px]:w-3/4">
           <h3 className="mb-[0.5em] text-[18px] font-semibold leading-[1.5] text-heading">
-            {holderName}
+            {ticket.name}
           </h3>
           <p className="mb-[1em] text-[14px] leading-[21px] text-text">
             <strong>Participación:</strong>
-            <span> .</span>
+            <span> {ticket.participacion}</span>
           </p>
           <p className="mb-[1em] text-[14px] leading-[21px] text-text">
             <strong>Fondo de inversión:</strong>
-            <span> {PRODUCT_TYPE}</span>
+            <span> {ticket.concept}</span>
           </p>
         </div>
       </div>
