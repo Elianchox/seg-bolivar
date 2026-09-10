@@ -55,7 +55,5 @@ export const DOC_TYPE_OPTIONS = [
   { value: "pasaporte", label: "Pasaporte" },
 ] as const;
 
-export const PAYMENT_AMOUNT = "$ 800,000.00";
-
 export const TERMS_URL =
   "https://o1p-pasarelapagbucket-p01.s3.amazonaws.com/images/TerminosYCondicionesPortal.pdf";

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Checkbox } from "@davivienda-pagos/components/ui/checkbox";
@@ -10,7 +10,6 @@ import {
   BANK_OPTIONS,
   DEFAULT_PSE_VALUES,
   DOC_TYPE_OPTIONS,
-  PAYMENT_AMOUNT,
   PERSON_TYPE_OPTIONS,
   pseSchema,
   TERMS_URL,
@@ -19,11 +18,12 @@ import {
 import { FormItem } from "./form-item";
 
 interface PsePaymentFormProps {
+  amount: string;
   onValidityChange?: (isValid: boolean) => void;
   onValuesChange?: (values: PseFormValues) => void;
 }
 
-export function PsePaymentForm({ onValidityChange, onValuesChange }: PsePaymentFormProps) {
+export function PsePaymentForm({ amount, onValidityChange, onValuesChange }: PsePaymentFormProps) {
   const {
     register,
     handleSubmit,
@@ -33,11 +33,15 @@ export function PsePaymentForm({ onValidityChange, onValuesChange }: PsePaymentF
   } = useForm<PseFormValues>({
     resolver: zodResolver(pseSchema),
     defaultValues: DEFAULT_PSE_VALUES,
-    mode: "onSubmit",
+    mode: "onChange",
     reValidateMode: "onChange",
   });
 
-  const values = useWatch({ control }) as PseFormValues;
+  const watchValues = useWatch({ control });
+  const values = useMemo(
+    () => ({ ...DEFAULT_PSE_VALUES, ...watchValues }) as PseFormValues,
+    [watchValues],
+  );
   const isComplete = pseSchema.safeParse(values).success;
 
   useEffect(() => {
@@ -94,7 +98,7 @@ export function PsePaymentForm({ onValidityChange, onValuesChange }: PsePaymentF
             <Input
               id="amount"
               disabled
-              value={PAYMENT_AMOUNT}
+              value={amount}
               className="cursor-not-allowed bg-surface-muted text-text-disabled"
             />
           </FormItem>

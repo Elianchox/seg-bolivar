@@ -2,26 +2,28 @@
 
 import { Modal } from "@davivienda-pagos/components/ui/modal";
 import { Button } from "@davivienda-pagos/components/ui/button";
+import { PAYMENT_METHOD, PRODUCT_TYPE } from "../constants/consult-api";
+import type { PaymentFormValues } from "../types/payment-schema";
 import type { PseFormValues } from "../types/pse-schema";
-import { SUMMARY_DATA } from "./payment-summary";
 
 interface PaymentConfirmModalProps {
   open: boolean;
   onClose: () => void;
   values: PseFormValues;
+  payment: PaymentFormValues;
 }
 
 const rowClass = "my-[3px] leading-[22px]";
 
-export function PaymentConfirmModal({ open, onClose, values }: PaymentConfirmModalProps) {
+export function PaymentConfirmModal({ open, onClose, values, payment }: PaymentConfirmModalProps) {
   const rows = [
-    { label: "Referencia / Producto", value: SUMMARY_DATA.fundNumber },
-    { label: "Concepto", value: SUMMARY_DATA.productType },
-    { label: "Medio de Pago", value: "PSE" },
+    { label: "Referencia / Producto", value: payment.productNumber },
+    { label: "Concepto", value: PRODUCT_TYPE },
+    { label: "Medio de Pago", value: PAYMENT_METHOD },
     { label: "A nombre de", value: values.name },
     { label: "Email", value: values.email },
     { label: "Teléfono", value: values.phone },
-    { label: "Monto", value: SUMMARY_DATA.total.replace(" COP", "") },
+    { label: "Monto", value: payment.amount },
   ];
 
   return (

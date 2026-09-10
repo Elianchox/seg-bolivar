@@ -2,13 +2,18 @@
 
 import { useState } from "react";
 import { Typography } from "@davivienda-pagos/components/ui/typography";
+import type { PaymentFormValues } from "../types/payment-schema";
 import { DEFAULT_PSE_VALUES, type PseFormValues } from "../types/pse-schema";
 import { PaymentMethodCard } from "./payment-method-card";
 import { PaymentSummary } from "./payment-summary";
 import { PsePaymentForm } from "./pse-payment-form";
 import { PaymentConfirmModal } from "./payment-confirm-modal";
 
-export function PagoStep() {
+interface PagoStepProps {
+  payment: PaymentFormValues;
+}
+
+export function PagoStep({ payment }: PagoStepProps) {
   const [pseFormReady, setPseFormReady] = useState(false);
   const [values, setValues] = useState<PseFormValues>(DEFAULT_PSE_VALUES);
   const [modalOpen, setModalOpen] = useState(false);
@@ -31,11 +36,20 @@ export function PagoStep() {
           <Typography variant="heading" className="mb-5 inline-block font-semibold">
             Ingrese la siguiente información
           </Typography>
-          <PsePaymentForm onValidityChange={setPseFormReady} onValuesChange={setValues} />
+          <PsePaymentForm
+            amount={payment.amount}
+            onValidityChange={setPseFormReady}
+            onValuesChange={setValues}
+          />
         </div>
 
         <div className="w-full px-[15px] min-[768px]:w-1/3">
-          <PaymentSummary disabled={!pseFormReady} onPagar={() => setModalOpen(true)} />
+          <PaymentSummary
+            disabled={!pseFormReady}
+            onPagar={() => setModalOpen(true)}
+            payment={payment}
+            holderName={values.name}
+          />
         </div>
       </div>
 
@@ -54,6 +68,7 @@ export function PagoStep() {
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         values={values}
+        payment={payment}
       />
     </div>
   );

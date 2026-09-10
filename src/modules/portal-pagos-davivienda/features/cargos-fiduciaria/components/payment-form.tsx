@@ -12,7 +12,11 @@ import { FormItem } from "./form-item";
 const TERMS_TEXT =
   "A través de este servicio usted podrá realizar transferencias electrónicas a los fondos de inversión colectiva que administra Fiduciaria Davivienda S.A. Usted debe disponer de los medios necesarios y seguros para utilizar el servicio de internet; por lo que Fiduciaria Davivienda S.A. no se puede hacer responsable de la disponibilidad ni confiabilidad de los mismos.";
 
-export function PaymentForm() {
+interface PaymentFormProps {
+  onConsultar: (values: PaymentFormValues) => void;
+}
+
+export function PaymentForm({ onConsultar }: PaymentFormProps) {
   const {
     register,
     handleSubmit,
@@ -32,7 +36,8 @@ export function PaymentForm() {
 
   const termsAccepted = useWatch({ control, name: "termsAccepted" });
 
-  const onSubmit = () => {
+  const onSubmit = (values: PaymentFormValues) => {
+    onConsultar(values);
     // eslint-disable-next-line react-hooks/immutability
     window.location.hash = "#/cargos/fiduciaria/pago";
   };
