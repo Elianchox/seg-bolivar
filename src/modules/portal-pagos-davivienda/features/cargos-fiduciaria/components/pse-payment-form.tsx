@@ -63,13 +63,22 @@ export function PsePaymentForm({ amount, onValidityChange, onValuesChange }: Pse
             required
             error={errors.bank?.message}
           >
-            <Select
-              id="banco"
-              placeholder="Seleccione"
-              options={BANK_OPTIONS.map(({ value, label }) => ({ value, label }))}
-              hasError={!!errors.bank}
-              aria-describedby={errors.bank ? "banco-error" : undefined}
-              {...register("bank")}
+            <Controller
+              name="bank"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  id="banco"
+                  placeholder="Seleccione"
+                  options={BANK_OPTIONS.map(({ value, label }) => ({ value, label }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  ref={field.ref}
+                  hasError={!!errors.bank}
+                  aria-describedby={errors.bank ? "banco-error" : undefined}
+                />
+              )}
             />
           </FormItem>
         </div>
@@ -80,13 +89,22 @@ export function PsePaymentForm({ amount, onValidityChange, onValuesChange }: Pse
             required
             error={errors.personType?.message}
           >
-            <Select
-              id="person"
-              placeholder="Seleccione"
-              options={PERSON_TYPE_OPTIONS.map(({ value, label }) => ({ value, label }))}
-              hasError={!!errors.personType}
-              aria-describedby={errors.personType ? "person-error" : undefined}
-              {...register("personType")}
+            <Controller
+              name="personType"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  id="person"
+                  placeholder="Seleccione"
+                  options={PERSON_TYPE_OPTIONS.map(({ value, label }) => ({ value, label }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  ref={field.ref}
+                  hasError={!!errors.personType}
+                  aria-describedby={errors.personType ? "person-error" : undefined}
+                />
+              )}
             />
           </FormItem>
         </div>
@@ -111,13 +129,22 @@ export function PsePaymentForm({ amount, onValidityChange, onValuesChange }: Pse
           >
             <div className="flex">
               <div className="mr-5 w-[calc(30%-10px)]">
-                <Select
-                  id="tipoDoc"
-                  placeholder="Tipo"
-                  options={DOC_TYPE_OPTIONS.map(({ value, label }) => ({ value, label }))}
-                  hasError={!!errors.docType}
-                  aria-label="Tipo de documento"
-                  {...register("docType")}
+                <Controller
+                  name="docType"
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      id="tipoDoc"
+                      placeholder="Tipo"
+                      options={DOC_TYPE_OPTIONS.map(({ value, label }) => ({ value, label }))}
+                      value={field.value}
+                      onChange={field.onChange}
+                      onBlur={field.onBlur}
+                      ref={field.ref}
+                      hasError={!!errors.docType}
+                      aria-label="Tipo de documento"
+                    />
+                  )}
                 />
               </div>
               <div className="w-[calc(70%-10px)]">
