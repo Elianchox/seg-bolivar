@@ -13,9 +13,10 @@ interface PagoStepProps {
   payment: PaymentFormValues;
   values: PseFormValues;
   onValuesChange: (values: PseFormValues) => void;
+  onContinue?: () => void;
 }
 
-export function PagoStep({ payment, values, onValuesChange }: PagoStepProps) {
+export function PagoStep({ payment, values, onValuesChange, onContinue }: PagoStepProps) {
   const [pseFormReady, setPseFormReady] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -68,6 +69,7 @@ export function PagoStep({ payment, values, onValuesChange }: PagoStepProps) {
       <PaymentConfirmModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
+        onContinue={onContinue}
         values={values}
         payment={payment}
       />

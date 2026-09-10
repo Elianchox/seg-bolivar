@@ -9,13 +9,20 @@ import type { PseFormValues } from "../types/pse-schema";
 interface PaymentConfirmModalProps {
   open: boolean;
   onClose: () => void;
+  onContinue?: () => void;
   values: PseFormValues;
   payment: PaymentFormValues;
 }
 
 const rowClass = "my-[3px] leading-[22px]";
 
-export function PaymentConfirmModal({ open, onClose, values, payment }: PaymentConfirmModalProps) {
+export function PaymentConfirmModal({
+  open,
+  onClose,
+  onContinue,
+  values,
+  payment,
+}: PaymentConfirmModalProps) {
   const rows = [
     { label: "Referencia / Producto", value: payment.productNumber },
     { label: "Concepto", value: PRODUCT_TYPE },
@@ -34,7 +41,7 @@ export function PaymentConfirmModal({ open, onClose, values, payment }: PaymentC
       footer={
         <>
           <Button onClick={onClose}>Volver</Button>
-          <Button variant="primary" onClick={onClose}>
+          <Button variant="primary" onClick={onContinue ?? onClose}>
             Continuar
           </Button>
         </>

@@ -69,7 +69,6 @@ export function PsePaymentForm({ amount, onValidityChange, onValuesChange }: Pse
               render={({ field }) => (
                 <Select
                   id="banco"
-                  placeholder="Seleccione"
                   options={BANK_OPTIONS.map(({ value, label }) => ({ value, label }))}
                   value={field.value}
                   onChange={field.onChange}
@@ -95,7 +94,6 @@ export function PsePaymentForm({ amount, onValidityChange, onValuesChange }: Pse
               render={({ field }) => (
                 <Select
                   id="person"
-                  placeholder="Seleccione"
                   options={PERSON_TYPE_OPTIONS.map(({ value, label }) => ({ value, label }))}
                   value={field.value}
                   onChange={field.onChange}
@@ -135,7 +133,6 @@ export function PsePaymentForm({ amount, onValidityChange, onValuesChange }: Pse
                   render={({ field }) => (
                     <Select
                       id="tipoDoc"
-                      placeholder="Tipo"
                       options={DOC_TYPE_OPTIONS.map(({ value, label }) => ({ value, label }))}
                       value={field.value}
                       onChange={field.onChange}

@@ -48,11 +48,13 @@ export const PERSON_TYPE_OPTIONS = [
 ] as const;
 
 export const DOC_TYPE_OPTIONS = [
-  { value: "cc", label: "CC" },
-  { value: "ce", label: "CE" },
-  { value: "ti", label: "TI" },
-  { value: "nit", label: "NIT" },
-  { value: "pasaporte", label: "Pasaporte" },
+  { value: "CC", label: "CC Cedula de Ciudadanía" },
+  { value: "TI", label: "TI Tarjeta de Identidad" },
+  { value: "Rut", label: "Rut Registro Unico Tributario" },
+  { value: "Nit", label: "Nit Numero de Identificación Tributaria" },
+  { value: "CE", label: "CE Cédula de Extranjería" },
+  { value: "PA", label: "PA Pasaporte" },
+  { value: "RC", label: "RC Registro Civil" },
 ] as const;
 
 export const TERMS_URL =

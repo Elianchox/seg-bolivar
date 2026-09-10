@@ -15,7 +15,6 @@ interface SelectProps {
   value: string;
   onChange: (value: string) => void;
   onBlur?: () => void;
-  placeholder?: string;
   hasError?: boolean;
   disabled?: boolean;
   className?: string;
@@ -30,7 +29,6 @@ export function Select({
   value,
   onChange,
   onBlur,
-  placeholder,
   hasError = false,
   disabled = false,
   className = "",
@@ -146,15 +144,13 @@ export function Select({
           else openMenu();
         }}
         onKeyDown={onTriggerKeyDown}
-        className={`relative h-8 w-full cursor-pointer rounded-[4px] border bg-surface pl-[11px] pr-[24px] text-left text-[14px] leading-8 outline-none transition-colors duration-300 disabled:cursor-not-allowed disabled:bg-surface-muted disabled:text-text-disabled ${
+        className={`relative h-8 w-full cursor-pointer rounded-[4px] border bg-surface pl-[11px] pr-[24px] text-left align-middle text-[14px] leading-8 outline-none transition-colors duration-300 disabled:cursor-not-allowed disabled:bg-surface-muted disabled:text-text-disabled ${
           hasError
             ? "border-error hover:border-error focus:border-error-focus focus:shadow-[0_0_0_2px_rgba(251,67,74,0.2)]"
             : "border-border hover:border-[#8f9ba6] focus:border-[#a8aeb3] focus:shadow-[0_0_0_2px_rgba(143,155,166,0.2)]"
         } ${className}`}
       >
-        <span className={selectedLabel ? "text-text" : "text-text-disabled"}>
-          {selectedLabel || placeholder}
-        </span>
+        <span className="block truncate text-text">{selectedLabel}</span>
         <IconArrowDown
           className={`pointer-events-none absolute right-[11px] top-1/2 -translate-y-1/2 text-[12px] text-text-muted transition-transform duration-300 ${
             open ? "rotate-180" : ""
