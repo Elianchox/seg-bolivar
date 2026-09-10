@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Typography } from "@davivienda-pagos/components/ui/typography";
 import type { PaymentFormValues } from "../types/payment-schema";
-import { DEFAULT_PSE_VALUES, type PseFormValues } from "../types/pse-schema";
+import type { PseFormValues } from "../types/pse-schema";
 import { PaymentMethodCard } from "./payment-method-card";
 import { PaymentSummary } from "./payment-summary";
 import { PsePaymentForm } from "./pse-payment-form";
@@ -11,11 +11,12 @@ import { PaymentConfirmModal } from "./payment-confirm-modal";
 
 interface PagoStepProps {
   payment: PaymentFormValues;
+  values: PseFormValues;
+  onValuesChange: (values: PseFormValues) => void;
 }
 
-export function PagoStep({ payment }: PagoStepProps) {
+export function PagoStep({ payment, values, onValuesChange }: PagoStepProps) {
   const [pseFormReady, setPseFormReady] = useState(false);
-  const [values, setValues] = useState<PseFormValues>(DEFAULT_PSE_VALUES);
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
@@ -39,7 +40,7 @@ export function PagoStep({ payment }: PagoStepProps) {
           <PsePaymentForm
             amount={payment.amount}
             onValidityChange={setPseFormReady}
-            onValuesChange={setValues}
+            onValuesChange={onValuesChange}
           />
         </div>
 
