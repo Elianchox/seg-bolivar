@@ -20,9 +20,10 @@ import { FormItem } from "./form-item";
 
 interface PsePaymentFormProps {
   onValidityChange?: (isValid: boolean) => void;
+  onValuesChange?: (values: PseFormValues) => void;
 }
 
-export function PsePaymentForm({ onValidityChange }: PsePaymentFormProps) {
+export function PsePaymentForm({ onValidityChange, onValuesChange }: PsePaymentFormProps) {
   const {
     register,
     handleSubmit,
@@ -36,12 +37,13 @@ export function PsePaymentForm({ onValidityChange }: PsePaymentFormProps) {
     reValidateMode: "onChange",
   });
 
-  const values = useWatch({ control });
+  const values = useWatch({ control }) as PseFormValues;
   const isComplete = pseSchema.safeParse(values).success;
 
   useEffect(() => {
     onValidityChange?.(isComplete);
-  }, [isComplete, onValidityChange]);
+    onValuesChange?.(values);
+  }, [isComplete, onValidityChange, onValuesChange, values]);
 
   const onSubmit = () => {
     // Redirección a PSE (pendiente del siguiente paso del flujo)

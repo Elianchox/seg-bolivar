@@ -2,12 +2,16 @@
 
 import { useState } from "react";
 import { Typography } from "@davivienda-pagos/components/ui/typography";
+import { DEFAULT_PSE_VALUES, type PseFormValues } from "../types/pse-schema";
 import { PaymentMethodCard } from "./payment-method-card";
 import { PaymentSummary } from "./payment-summary";
 import { PsePaymentForm } from "./pse-payment-form";
+import { PaymentConfirmModal } from "./payment-confirm-modal";
 
 export function PagoStep() {
   const [pseFormReady, setPseFormReady] = useState(false);
+  const [values, setValues] = useState<PseFormValues>(DEFAULT_PSE_VALUES);
+  const [modalOpen, setModalOpen] = useState(false);
 
   return (
     <div>
@@ -27,11 +31,11 @@ export function PagoStep() {
           <Typography variant="heading" className="mb-5 inline-block font-semibold">
             Ingrese la siguiente información
           </Typography>
-          <PsePaymentForm onValidityChange={setPseFormReady} />
+          <PsePaymentForm onValidityChange={setPseFormReady} onValuesChange={setValues} />
         </div>
 
         <div className="w-full px-[15px] min-[768px]:w-1/3">
-          <PaymentSummary disabled={!pseFormReady} />
+          <PaymentSummary disabled={!pseFormReady} onPagar={() => setModalOpen(true)} />
         </div>
       </div>
 
@@ -45,6 +49,12 @@ export function PagoStep() {
           *Esta transacción está sujeta a verificación. El total a pagar es en pesos Colombianos.
         </p>
       </div>
+
+      <PaymentConfirmModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        values={values}
+      />
     </div>
   );
 }
