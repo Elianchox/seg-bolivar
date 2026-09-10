@@ -1,11 +1,14 @@
 "use client";
 
-import { useMemo, useState, type FormEvent, type ReactNode } from "react";
+import { Controller, useForm, useWatch } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import type { ReactNode } from "react";
 import { Button } from "@davivienda-pagos/components/ui/button";
 import { Checkbox } from "@davivienda-pagos/components/ui/checkbox";
 import { IconInfoCircle } from "@davivienda-pagos/components/ui/icons/info-circle";
 import { Input } from "@davivienda-pagos/components/ui/input";
 import { Tooltip } from "@davivienda-pagos/components/ui/tooltip";
+import { paymentSchema, type PaymentFormValues } from "../types/payment-schema";
 import { AmountInput } from "./amount-input";
 
 interface FormItemProps {
@@ -13,10 +16,11 @@ interface FormItemProps {
   label: string;
   required?: boolean;
   help?: string;
+  error?: string;
   children: ReactNode;
 }
 
-function FormItem({ id, label, required = false, help, children }: FormItemProps) {
+function FormItem({ id, label, required = false, help, error, children }: FormItemProps) {
   return (
     <div>
       <label htmlFor={id} className="block text-[14px] leading-[22px] text-heading">
@@ -30,6 +34,15 @@ function FormItem({ id, label, required = false, help, children }: FormItemProps
         <span className="ml-[2px] mr-2 hidden min-[480px]:inline">:</span>
       </label>
       <div className="leading-10">{children}</div>
+      {error && (
+        <div
+          id={`${id}-error`}
+          role="alert"
+          className="min-h-[22px] text-[14px] leading-[21px] text-error"
+        >
+          {error}
+        </div>
+      )}
     </div>
   );
 }
@@ -38,28 +51,32 @@ const TERMS_TEXT =
   "A través de este servicio usted podrá realizar transferencias electrónicas a los fondos de inversión colectiva que administra Fiduciaria Davivienda S.A. Usted debe disponer de los medios necesarios y seguros para utilizar el servicio de internet; por lo que Fiduciaria Davivienda S.A. no se puede hacer responsable de la disponibilidad ni confiabilidad de los mismos.";
 
 export function PaymentForm() {
-  const [identification, setIdentification] = useState("");
-  const [productNumber, setProductNumber] = useState("");
-  const [amount, setAmount] = useState("$ ");
-  const [termsAccepted, setTermsAccepted] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<PaymentFormValues>({
+    resolver: zodResolver(paymentSchema),
+    defaultValues: {
+      ticketNumber: "",
+      productNumber: "",
+      amount: "$ ",
+      termsAccepted: false,
+    },
+    mode: "onSubmit",
+    reValidateMode: "onChange",
+  });
 
-  const valid = useMemo(
-    () =>
-      identification.trim().length > 0 &&
-      productNumber.trim().length > 0 &&
-      Number(amount.replace(/[^\d]/g, "")) > 0 &&
-      termsAccepted,
-    [identification, productNumber, amount, termsAccepted],
-  );
+  const termsAccepted = useWatch({ control, name: "termsAccepted" });
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!valid) return;
+  const onSubmit = () => {
+    // eslint-disable-next-line react-hooks/immutability
     window.location.hash = "#/cargos/fiduciaria/pago";
   };
 
   return (
-    <form className="w-full" onSubmit={handleSubmit}>
+    <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
       <div className="-mx-[15px] -my-[4px] flex flex-wrap">
         <div className="w-full px-[15px] py-[4px] min-[576px]:w-1/2">
           <FormItem
@@ -67,13 +84,15 @@ export function PaymentForm() {
             label="Número de identificación"
             required
             help="Ingrese su número de identidad sin espacios, puntos, comas ni caracteres especiales"
+            error={errors.ticketNumber?.message}
           >
             <Input
               id="ticket_number"
               maxLength={16}
               placeholder="Número de identificación"
-              value={identification}
-              onChange={(e) => setIdentification(e.target.value)}
+              hasError={!!errors.ticketNumber}
+              aria-describedby={errors.ticketNumber ? "ticket_number-error" : undefined}
+              {...register("ticketNumber")}
             />
           </FormItem>
         </div>
@@ -83,13 +102,15 @@ export function PaymentForm() {
             label="Número Producto"
             required
             help="El número de su fondo de inversión consta de 16 dígitos, por favor ingréselo sin espacios, puntos, comas ni caracteres especiales. Más información en la línea nacional 01 800 0919 561 desde Bogotá 601 338 3838"
+            error={errors.productNumber?.message}
           >
             <Input
               id="product_number"
               maxLength={16}
               placeholder="Número Producto"
-              value={productNumber}
-              onChange={(e) => setProductNumber(e.target.value)}
+              hasError={!!errors.productNumber}
+              aria-describedby={errors.productNumber ? "product_number-error" : undefined}
+              {...register("productNumber")}
             />
           </FormItem>
         </div>
@@ -102,8 +123,20 @@ export function PaymentForm() {
             label="Valor aporte"
             required
             help="Ingrese el valor que usted desea debitar de su cuenta en otra identidad financiera, para ser abonado a su fondo"
+            error={errors.amount?.message}
           >
-            <AmountInput id="amount" value={amount} onChange={setAmount} />
+            <Controller
+              name="amount"
+              control={control}
+              render={({ field }) => (
+                <AmountInput
+                  id="amount"
+                  value={field.value}
+                  onChange={field.onChange}
+                  hasError={!!errors.amount}
+                />
+              )}
+            />
           </FormItem>
         </div>
       </div>
@@ -130,17 +163,33 @@ export function PaymentForm() {
           <p className="mb-[14px] text-[14px] leading-[21px] text-text">{TERMS_TEXT}</p>
         </div>
         <div className="w-full px-[15px] py-[4px]">
-          <Checkbox
-            id="terminosFiduciaria"
-            label="Acepto Términos y Condiciones"
-            checked={termsAccepted}
-            onChange={setTermsAccepted}
+          <Controller
+            name="termsAccepted"
+            control={control}
+            render={({ field }) => (
+              <Checkbox
+                id="terminosFiduciaria"
+                label="Acepto Términos y Condiciones"
+                checked={field.value}
+                onChange={field.onChange}
+                hasError={!!errors.termsAccepted}
+              />
+            )}
           />
+          {errors.termsAccepted && (
+            <div
+              id="terminosFiduciaria-error"
+              role="alert"
+              className="min-h-[22px] text-[14px] leading-[21px] text-error"
+            >
+              {errors.termsAccepted.message}
+            </div>
+          )}
         </div>
       </div>
 
       <div className="flex justify-center mb-10">
-        <Button variant="primary" type="submit" disabled={!valid}>
+        <Button variant="primary" type="submit" disabled={!termsAccepted}>
           Consultar
         </Button>
       </div>

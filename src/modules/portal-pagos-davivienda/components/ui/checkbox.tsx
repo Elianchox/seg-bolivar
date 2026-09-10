@@ -3,9 +3,10 @@ interface CheckboxProps {
   checked?: boolean;
   onChange?: (checked: boolean) => void;
   label: string;
+  hasError?: boolean;
 }
 
-export function Checkbox({ id, checked = false, onChange, label }: CheckboxProps) {
+export function Checkbox({ id, checked = false, onChange, label, hasError = false }: CheckboxProps) {
   return (
     <label
       htmlFor={id}
@@ -16,12 +17,17 @@ export function Checkbox({ id, checked = false, onChange, label }: CheckboxProps
         type="checkbox"
         checked={checked}
         onChange={(e) => onChange?.(e.target.checked)}
+        aria-invalid={hasError || undefined}
         className="sr-only"
       />
       <span
         aria-hidden="true"
         className={`relative flex h-4 w-4 shrink-0 items-center justify-center rounded-[2px] border transition-colors duration-300 ${
-          checked ? "border-brand bg-brand" : "border-border bg-surface hover:border-brand"
+          checked
+            ? "border-brand bg-brand"
+            : hasError
+              ? "border-error bg-surface hover:border-brand"
+              : "border-border bg-surface hover:border-brand"
         }`}
       >
         {checked && (
